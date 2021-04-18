@@ -1,0 +1,45 @@
+version: "3"
+services:
+  ui-service:
+    image: ui-service
+    stdin_open: true
+    ports:
+      - "9002:3000"
+    networks:
+      - mynet
+  auth-service:
+    image: auth-service
+    stdin_open: true
+    ports:
+      - "1000:3002"
+    depends_on:
+      - mongo
+    networks:
+      - mynet
+  crud-service:
+    image: crud-service
+    stdin_open: true
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mongo
+    networks:
+      - mynet
+  rate-service:
+    image: rate-service
+    stdin_open: true
+    ports:
+      - "6001:3001"
+    depends_on:
+      - mongo
+    networks:
+      - mynet
+  mongo:
+    image: mongo:3.6.19-xenial
+    ports:
+      - "27017:27017"
+    networks:
+      - mynet
+networks:
+  mynet:
+    driver: bridge
